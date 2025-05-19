@@ -1,10 +1,11 @@
+// app/page.js or app/(home)/page.js
+
 import React from 'react';
 
-// ✅ MovieCard component optimized with React.memo
+// ✅ Memoized MovieCard
 const MovieCard = React.memo(function MovieCard({ movie }) {
-
   return (
-    <div key={movie.id} className="border p-2 rounded shadow">
+    <div className="border p-2 rounded shadow">
       <img 
         src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
         alt={movie.title || movie.name} 
@@ -21,13 +22,13 @@ const MovieCard = React.memo(function MovieCard({ movie }) {
 });
 
 export default async function Home({ searchParams }) {
-  const genre = await searchParams?.genre || "fetchToptrending";
+  const genre = searchParams?.genre || "fetchTrending";
 
   const endpoint = genre === 'fetchTrending' 
     ? '/trending/all/week' 
     : '/movie/top_rated';
 
-  const options = {
+   const options = {
     method: 'GET',
     headers: {
       accept: 'application/json',
@@ -35,7 +36,6 @@ export default async function Home({ searchParams }) {
     }
   };
 
-  
   const res = await fetch(`https://api.themoviedb.org/3${endpoint}?language=en-US&page=1`, options);
 
   if (!res.ok) {
@@ -45,7 +45,7 @@ export default async function Home({ searchParams }) {
   const result = await res.json();
 
   return (
-    <div>
+    <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Movies</h1>
       <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {result.results?.map(movie => (
