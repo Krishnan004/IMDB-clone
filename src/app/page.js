@@ -1,15 +1,25 @@
 // app/page.js or app/(home)/page.js
 
+import Image from 'next/image';
 import React from 'react';
 
 // ✅ Memoized MovieCard
 const MovieCard = React.memo(function MovieCard({ movie }) {
   return (
     <div className="border p-2 rounded shadow">
-      <img 
+      <Image
         src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
         alt={movie.title || movie.name} 
         className="w-full h-auto rounded"
+        width={500}
+        height={750}
+        
+        loading="lazy"
+        placeholder="blur"
+        blurDataURL={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        style={{ width: '100%', height: 'auto' }} // Responsive image
+        
       />
       <h2 className="mt-2 font-semibold text-lg">
         {movie.title || movie.name}
